@@ -35,3 +35,17 @@ variable "cloudwatch_event_target_role_arn" {
   description = "IAM role to be used for this target when the rule is triggered."
   default     = null
 }
+
+variable "cloudwatch_event_target_input_transformer" {
+  type = object({
+    input_paths    = map(string)
+    input_template = string
+  })
+  description = <<-EOT
+    Optional input transformer for the target, to send a readable message instead of the raw event.
+    `input_paths` maps placeholder names to JSONPath expressions on the event; `input_template` uses them as <name>.
+    For an SNS target that should post plain text, quote the whole template, e.g. "\"Service <service> reported <eventType>\"".
+    Default null leaves the target unchanged (raw event).
+  EOT
+  default     = null
+}
